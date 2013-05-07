@@ -17,10 +17,11 @@ module Rdominion
       Display.break
     end
 
-    def buy(idx, player)
+    def remove(card, to)
+      idx = @supplies.index { |supply| supply[:name].to_s == card.name }
       return false if @supplies[idx][:stock] <= 0
+      to.add(card)
       @supplies[idx][:stock] -= 1
-      get_card(idx)
     end
 
     def get_card(idx)
@@ -30,6 +31,10 @@ module Rdominion
 
     def get_card_name(idx)
       @supplies[idx][:name]
+    end
+
+    def stock(idx)
+      @supplies[idx][:stock]
     end
 
     def cost(idx)

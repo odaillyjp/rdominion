@@ -55,9 +55,7 @@ module Rdominion
           when "L"
             show_game_log(player)
             show_phase_info(player)
-          when *play_cmds
-            player_action(player, cmd)
-            show_phase_info(player)
+          when *play_cmds then player_action(player, cmd)
           else command_not_found(cmd)
         end
       end
@@ -72,18 +70,16 @@ module Rdominion
         cmd = player.receive_command
         case cmd
           when KEY_ENTER then break
-          when KEY_ESC then
+          when KEY_ESC
             ask_quit_game
             show_phase_info(player)
-          when "I" then
+          when "I"
             show_hand(player)
             show_phase_info(player)
-          when "L" then
+          when "L"
             show_game_log(player)
             show_phase_info(player)
-          when *play_cmds then
-            player.buy_card(cmd.to_idx)
-            show_phase_info(player)
+          when *play_cmds then player_buy(player, cmd)
           else command_not_found(cmd)
         end
       end
@@ -124,9 +120,11 @@ module Rdominion
     end
 
     def player_action(player, cmd)
-      Display.clear
-      player.play_action(cmd.to_idx)
-      show_phase_info(player)
+      show_phase_info(player) if player.play_action(cmd.to_idx)
+    end
+
+    def player_buy(player, cmd)
+      show_phase_info(player) if player.buy_supply(cmd.to_idx)
     end
 
     def show_command

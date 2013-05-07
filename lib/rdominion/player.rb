@@ -39,6 +39,7 @@ module Rdominion
       effect_log = add_bonus(effects)
       Log.add "#{@name} plays \"#{card.name}\": #{effect_log}"
       CardAbility.send(effects[:ability], self) if effects[:ability]
+      true
     end
 
     def play_tresure_all
@@ -97,22 +98,28 @@ module Rdominion
       Display.break
     end
 
-    def buy_card(idx)
+    def buy_supply(idx)
       if @@supply.cost(idx) > @coin
         Display.warn "\"#{@@supply.get_card_name(idx)}\" Not enough coin."
         Display.backline(2)
         return false
       end
-      card = @@supply.buy(idx, self)
-      unless card
+      return false unless supply_stock?(idx)
+      card = @@supply.get_card(idx)
+      @buy -= 1
+      @coin -= card.cost
+      @@supply.remove(card, @discard)
+      Log.add "#{@name} buys \"#{card.name}\"."
+      true
+    end
+
+    def supply_stock?(idx)
+      if @@supply.stock(idx) == 0
         Display.warn "\"#{@@supply.get_card_name(idx)}\" No Stock."
         Display.backline(2)
         return false
       end
-      @buy -= 1
-      @coin -= card.cost
-      @discard.add(card)
-      Log.add "#{@name} buys \"#{card.name}\"."
+      true
     end
 
     def choose_hand_card
@@ -142,25 +149,27 @@ module Rdominion
       @@supply.display
       Display.notice "< Choose Supply >"
       cmds = get_commands(@@supply)
-      card = nil
+      idx = nil
       loop do
         key = Display.getch
         Display.backslash
-        if cmds.include?(key)
-          card = @@supply.get_card(key.to_idx)
-          break if opts[:max_cost].nil? || card.cost <= opts[:max_cost]
-          Display.warn "\"#{card.name}\" Costs over. You choose card costing up to #{opts[:max_cost]} Coins."
-          Display.backline
-        else
+        unless cmds.include?(key)
           Display.warn "\"#{key}\": Command not found."
           Display.backline
+          next
         end
+        idx = key.to_idx
+        if opts[:max_cost] && @@supply.cost(idx) > opts[:max_cost]
+          Display.warn "\"#{@@supply.get_card_name(idx)}\" Costs over. You choose card costing up to #{opts[:max_cost]} Coins."
+          Display.backline
+          next
+        end
+        return @@supply.get_card(idx) if supply_stock?(idx)
       end
-      card
     end
 
     def gain_to_discard(card)
-      @discard.add(card)
+      @@supply.remove(card, @discard)
       Log.add "#{@name} gain \"#{card.name}\"."
       card
     end
