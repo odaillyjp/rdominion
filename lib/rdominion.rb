@@ -156,8 +156,10 @@ module Rdominion
       loop do
         key = Display.getch.to_s.upcase
         Display.backslash
-        return true if key == "Y"
-        return false if key == "N"
+        case key
+          when "Y" then return true
+          when "N" then return false
+        end
       end
     end
 
