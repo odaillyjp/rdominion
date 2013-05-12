@@ -31,7 +31,7 @@ module Rdominion
       card = @hand.get_card(idx)
       return false if card.nil?
       unless card.action?
-        Display.warn "\"#{card.name}\": Card not action."
+        Display.caution "\"#{card.name}\": Card not action."
         Display.backline
         return false
       end
@@ -102,7 +102,7 @@ module Rdominion
 
     def buy_supply(idx)
       if @@supply.cost(idx) > @coin
-        Display.warn "\"#{@@supply.get_card_name(idx)}\" Not enough coin."
+        Display.caution "\"#{@@supply.get_card_name(idx)}\" Not enough coin."
         Display.backline
         return false
       end
@@ -117,7 +117,7 @@ module Rdominion
 
     def supply_stock?(idx)
       if @@supply.stock(idx) == 0
-        Display.warn "\"#{@@supply.get_card_name(idx)}\" No Stock."
+        Display.caution "\"#{@@supply.get_card_name(idx)}\" No Stock."
         Display.backline
         return false
       end
@@ -137,10 +137,7 @@ module Rdominion
         if cmds.include?(key)
           card = @hand.get_card(key.to_idx)
           break
-        else
-          command_not_found(key)
-          # Display.warn "\"#{key}\": Command not found."
-          # Display.backline
+        else command_not_found(key)
         end
       end
       card
@@ -158,13 +155,11 @@ module Rdominion
         Display.backslash
         unless cmds.include?(key)
           command_not_found(key)
-          #Display.warn "\"#{key}\": Command not found."
-          #Display.backline
           next
         end
         idx = key.to_idx
         if opts[:max_cost] && @@supply.cost(idx) > opts[:max_cost]
-          Display.warn "\"#{@@supply.get_card_name(idx)}\" Costs over. You choose card costing up to #{opts[:max_cost]} Coins."
+          Display.caution "\"#{@@supply.get_card_name(idx)}\" Costs over. You choose card costing up to #{opts[:max_cost]} Coins."
           Display.backline
           next
         end

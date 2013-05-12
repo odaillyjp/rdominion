@@ -44,7 +44,7 @@ module Rdominion
         @display.addstr("\n")
       end
 
-      def warn(text)
+      def caution(text)
         add_text("<!color:red>#{text}<!/color>")
         show
       end
