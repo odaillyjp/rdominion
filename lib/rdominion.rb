@@ -5,10 +5,12 @@ require "rdominion/card"
 require "rdominion/deck"
 require "rdominion/supply"
 require "rdominion/player"
+require "rdominion/command"
 
 module Rdominion
   KEY_ENTER = 10
   KEY_ESC = 27
+  include Command
 
   class Game
     def initialize
@@ -142,25 +144,6 @@ module Rdominion
       Display.add_info "[ Command ]"
       cmds.each { |cmd| Display.add_text("(#{cmd[0]}) #{cmd[1]}") }
       Display.add_break
-    end
-
-    def ask_quit_game
-      Display.backline
-      Display.notice "< NOTICE > Are you sure you want to quit? (Y/N)"
-      Display.add_break
-      Display.backline
-      exit if receive_yes_or_no
-    end
-
-    def receive_yes_or_no
-      loop do
-        key = Display.getch.to_s.upcase
-        Display.backslash
-        case key
-          when "Y" then return true
-          when "N" then return false
-        end
-      end
     end
 
     def command_not_found(cmd)
