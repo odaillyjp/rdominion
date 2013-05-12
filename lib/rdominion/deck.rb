@@ -31,15 +31,15 @@ module Rdominion
     end
 
     def display
-      Display.addinfo "[ Your hand ]"
+      Display.add_info "[ Your hand ]"
       @cards.each_with_index do |card, idx|
         alp_idx = (97 + idx).chr
         space = 20 - (card.name.size)
         text = "(#{alp_idx}) #{card.name}#{" " * space}[ #{card.cost} cost ] { #{card.description.truncate} }"
         text = "<!color:#{card.class.color}>#{text}<!/color>" if card.class.color
-        Display.addstr(text)
+        Display.add_text(text)
       end
-      Display.break
+      Display.add_break
     end
 
     def oneline_list

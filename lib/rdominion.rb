@@ -139,15 +139,15 @@ module Rdominion
         when "Action" then cmds.delete_at(1)
         when "Buy" then cmds.delete_at(0)
       end
-      Display.addinfo "[ Command ]"
-      cmds.each { |cmd| Display.addstr("(#{cmd[0]}) #{cmd[1]}") }
-      Display.break
+      Display.add_info "[ Command ]"
+      cmds.each { |cmd| Display.add_text("(#{cmd[0]}) #{cmd[1]}") }
+      Display.add_break
     end
 
     def ask_quit_game
       Display.backline
       Display.notice "< NOTICE > Are you sure you want to quit? (Y/N)"
-      Display.break
+      Display.add_break
       Display.backline
       exit if receive_yes_or_no
     end

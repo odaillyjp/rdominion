@@ -5,16 +5,16 @@ module Rdominion
     end
 
     def display
-      Display.addinfo "[ Supplies ]"
+      Display.add_info "[ Supplies ]"
       @supplies.each_with_index do |supply, idx|
         alp_idx = (97 + idx).chr
         space = 20 - (supply[:stock].to_s.size + supply[:name].size)
         card_color = Rdominion::const_get(supply[:name]).color
         text = "(#{alp_idx}) #{supply[:stock]} #{supply[:name]}#{" " * space}[ #{supply[:cost ]} cost ] { #{supply[:description].truncate} }"
         text = "<!color:#{card_color}>#{text}<!/color>" if card_color
-        Display.addstr(text)
+        Display.add_text(text)
       end
-      Display.break
+      Display.add_break
     end
 
     def remove(card, to)

@@ -92,10 +92,10 @@ module Rdominion
     end
 
     def show_status
-      Display.addinfo "[ #{@name} ]"
-      Display.addstr "#{@action} Action | #{@buy} Buy | #{@coin} Coin | #{@hand.size} Hand | #{@deck.size} Deck | #{@discard.size} Discard"
-      Display.addstr "Used: #{@play_area.oneline_list}"
-      Display.break
+      Display.add_info "[ #{@name} ]"
+      Display.add_text "#{@action} Action | #{@buy} Buy | #{@coin} Coin | #{@hand.size} Hand | #{@deck.size} Deck | #{@discard.size} Discard"
+      Display.add_text "Used: #{@play_area.oneline_list}"
+      Display.add_break
     end
 
     def buy_supply(idx)

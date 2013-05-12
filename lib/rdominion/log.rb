@@ -9,9 +9,9 @@ module Rdominion
 
     def self.show(row = 40)
       text = @logs.last(row).join("\n")
-      Display.addinfo "[ Game Log ]"
-      Display.addstr(text)
-      Display.break
+      Display.add_info "[ Game Log ]"
+      Display.add_text(text)
+      Display.add_break
       Display.show
     end
   end
