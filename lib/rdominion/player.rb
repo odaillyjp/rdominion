@@ -1,10 +1,12 @@
 require "rdominion/card_ability"
+require "rdominion/command"
 
 module Rdominion
   class Player
     attr_reader :name, :action, :buy, :coin
     @@trash = StandardDeck.new
     @@supply = Supply.new
+    include Command
 
     def initialize(name)
       @name = name
@@ -30,7 +32,7 @@ module Rdominion
       return false if card.nil?
       unless card.action?
         Display.warn "\"#{card.name}\": Card not action."
-        Display.backline(2)
+        Display.backline
         return false
       end
       @action -= 1
@@ -101,7 +103,7 @@ module Rdominion
     def buy_supply(idx)
       if @@supply.cost(idx) > @coin
         Display.warn "\"#{@@supply.get_card_name(idx)}\" Not enough coin."
-        Display.backline(2)
+        Display.backline
         return false
       end
       return false unless supply_stock?(idx)
@@ -116,7 +118,7 @@ module Rdominion
     def supply_stock?(idx)
       if @@supply.stock(idx) == 0
         Display.warn "\"#{@@supply.get_card_name(idx)}\" No Stock."
-        Display.backline(2)
+        Display.backline
         return false
       end
       true
@@ -136,8 +138,9 @@ module Rdominion
           card = @hand.get_card(key.to_idx)
           break
         else
-          Display.warn "\"#{key}\": Command not found."
-          Display.backline
+          command_not_found(key)
+          # Display.warn "\"#{key}\": Command not found."
+          # Display.backline
         end
       end
       card
@@ -154,8 +157,9 @@ module Rdominion
         key = Display.getch
         Display.backslash
         unless cmds.include?(key)
-          Display.warn "\"#{key}\": Command not found."
-          Display.backline
+          command_not_found(key)
+          #Display.warn "\"#{key}\": Command not found."
+          #Display.backline
           next
         end
         idx = key.to_idx
@@ -178,21 +182,6 @@ module Rdominion
       @hand.remove(card, @@trash)
       Log.add "#{@name} trashs \"#{card.name}\"."
       card
-    end
-
-    def receive_command
-      Display.notice "< Press Command Key > "
-      key = Display.getch
-      Display.backslash
-      key
-    end
-
-    def wait_until_press_enter
-      Display.notice "< Press Enter Key >"
-      loop do
-        break if Display.getch == KEY_ENTER
-        Display.backslash
-      end
     end
 
     private

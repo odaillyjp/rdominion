@@ -63,7 +63,9 @@ module Rdominion
       end
 
       def getch
-        @display.getch
+        key = @display.getch
+        backslash
+        key
       end
 
 

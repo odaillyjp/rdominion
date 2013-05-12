@@ -10,9 +10,10 @@ require "rdominion/command"
 module Rdominion
   KEY_ENTER = 10
   KEY_ESC = 27
-  include Command
 
   class Game
+    include Command
+
     def initialize
       @player_1 = Player.new("Player")
       @player_2 = Player.new("Computer")
@@ -58,7 +59,9 @@ module Rdominion
             show_game_log(player)
             show_phase_info(player)
           when *play_cmds then player_action(player, cmd)
-          else command_not_found(cmd)
+          else
+            command_not_found(cmd)
+            Display.backline
         end
       end
     end
@@ -82,7 +85,9 @@ module Rdominion
             show_game_log(player)
             show_phase_info(player)
           when *play_cmds then player_buy(player, cmd)
-          else command_not_found(cmd)
+          else
+            command_not_found(cmd)
+            Display.backline
         end
       end
     end
@@ -122,11 +127,19 @@ module Rdominion
     end
 
     def player_action(player, cmd)
-      show_phase_info(player) if player.play_action(cmd.to_idx)
+      if player.play_action(cmd.to_idx)
+        show_phase_info(player)
+      else
+        Display.backline
+      end
     end
 
     def player_buy(player, cmd)
-      show_phase_info(player) if player.buy_supply(cmd.to_idx)
+      if player.buy_supply(cmd.to_idx)
+        show_phase_info(player)
+      else
+        Display.backline
+      end
     end
 
     def show_command
@@ -144,11 +157,6 @@ module Rdominion
       Display.add_info "[ Command ]"
       cmds.each { |cmd| Display.add_text("(#{cmd[0]}) #{cmd[1]}") }
       Display.add_break
-    end
-
-    def command_not_found(cmd)
-      Display.warn "\"#{cmd}\": Command not found."
-      Display.backline(2)
     end
   end
 end
