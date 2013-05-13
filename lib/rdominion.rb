@@ -19,6 +19,7 @@ module Rdominion
       @player_2 = Player.new("Computer")
       @phase = ""
       @turn = 1
+      CardAbility.setting([@player_1, @player_2])
     end
 
     def run
@@ -144,15 +145,19 @@ module Rdominion
 
     def show_command
       cmds = [
-        ["S", "Show supplies"],
-        ["I", "Show player hand card"],
-        ["L", "Show game log"],
-        ["ENTER", "Done phase" ],
+        ["S", "Show Supplies"],
+        ["I", "Show Player Hand Cards"],
+        ["L", "Show Game Logs"],
+        ["ENTER", "Done" ],
         ["ESC", "Quit Game"]
       ]
       case @phase
-        when "Action" then cmds.delete_at(1)
-        when "Buy" then cmds.delete_at(0)
+        when "Action"
+          cmds[2][2] = "Done Actions"
+          cmds.delete_at(1)
+        when "Buy"
+          cmds[2][2] = "Done Turns"
+          cmds.delete_at(0)
       end
       Display.add_info "[ Command ]"
       cmds.each { |cmd| Display.add_text("(#{cmd[0]}) #{cmd[1]}") }

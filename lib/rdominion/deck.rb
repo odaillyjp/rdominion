@@ -15,6 +15,7 @@ module Rdominion
     def remove(card, to)
       to.add(card)
       @cards.delete(card)
+      true
     end
 
     def remove_all(to)
@@ -45,6 +46,10 @@ module Rdominion
     def oneline_list
       return "-" if @cards.size == 0
       @cards.reverse.inject("") { |sum, card| [sum, card.name].join(" ") }
+    end
+
+    def has_card?(klass)
+      !!@cards.find { |card| card.is_a?(klass) }
     end
   end
 

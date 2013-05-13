@@ -64,15 +64,15 @@ module Rdominion
     def add_bonus(effects)
       effect_logs = []
       [:action, :coin, :buy].each do |target|
-        if effects[target] > 0
+        if effects[target] && effects[target] > 0
           eval("@#{target} += effects[target]", binding)
           eval("effect_logs.push(\"+#{effects[target]} #{target.to_s}\")", binding)
         end
       end
-      if effects[:card] > 0
+      if effects[:card] && effects[:card] > 0
         cards = @deck.draw(effects[:card], @discard)
         @hand.add(cards)
-        cards.each { |card| effect_logs.push("get \"#{card.name}\"") }
+        cards.each { |card| effect_logs.push("draw \"#{card.name}\"") }
       end
       effect_logs.join("; ")
     end
@@ -117,49 +117,56 @@ module Rdominion
 
     def supply_stock?(idx)
       if @@supply.stock(idx) == 0
-        Display.caution "\"#{@@supply.get_card_name(idx)}\" No Stock."
+        Display.caution "\"#{@@supply.get_card_name(idx)}\" No stock."
         Display.backline
         return false
       end
       true
     end
 
-    def choose_hand_card
+    def has_hand_card?(klass)
+      @hand.has_card?(klass)
+    end
+
+    def choose_hand_card(cancel: false, klass: nil)
       Display.clear
       Log.show(3)
       @hand.display
-      Display.notice "< Choose Card >"
+      Display.notice "< Press Card Index >"
+      Display.notice "< Press ENTER KEY - Done Choose >" if cancel
       cmds = get_commands(@hand)
-      card = nil
       loop do
         key = Display.getch
-        Display.backslash
-        if cmds.include?(key)
-          card = @hand.get_card(key.to_idx)
-          break
-        else command_not_found(key)
+        return nil if cancel && key == KEY_ENTER
+        unless cmds.include?(key)
+          command_not_found(key)
+          next
         end
+        card = @hand.get_card(key.to_idx)
+        if klass && !card.is_a?(klass)
+          Display.caution "\"#{card.name}\" Not equal \"#{klass.to_s}\"."
+          next
+        end
+        return card
       end
-      card
     end
 
-    def choose_supply_card(opts = {})
+    def choose_supply_card(max_cost: nil)
       Display.clear
       Log.show(3)
       @@supply.display
-      Display.notice "< Choose Supply >"
+      Display.notice "< Press Supply Index >"
       cmds = get_commands(@@supply)
       idx = nil
       loop do
         key = Display.getch
-        Display.backslash
         unless cmds.include?(key)
           command_not_found(key)
           next
         end
         idx = key.to_idx
-        if opts[:max_cost] && @@supply.cost(idx) > opts[:max_cost]
-          Display.caution "\"#{@@supply.get_card_name(idx)}\" Costs over. You choose card costing up to #{opts[:max_cost]} Coins."
+        if max_cost && @@supply.cost(idx) > max_cost
+          Display.caution "\"#{@@supply.get_card_name(idx)}\" Costs over. You choose card costing up to #{max_cost} Coins."
           Display.backline
           next
         end
@@ -168,13 +175,13 @@ module Rdominion
     end
 
     def gain_to_discard(card)
-      @@supply.remove(card, @discard)
+      return nil unless @@supply.remove(card, @discard)
       Log.add "#{@name} gain \"#{card.name}\"."
       card
     end
 
     def trash_from_hand(card)
-      @hand.remove(card, @@trash)
+      return nil unless @hand.remove(card, @@trash)
       Log.add "#{@name} trashs \"#{card.name}\"."
       card
     end

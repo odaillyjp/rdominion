@@ -121,7 +121,7 @@ module Rdominion
     [:Market, :Action, [5, 1, 1, 1, 1], "+1 Card; +1 Action; +1 Buy; +1 Coin"],
     [:Remodel, :Action, [4, 0, 0, 0, 0, "remodel"], "Trash a card from your hand. Gain a card costing up to 2 Coins more than the trashed card."],
     [:Smithy, :Action, [4, 0, 0, 0, 3], "+3 Cards"],
-    [:Moneylender, :Action, [4, 0, 0, 0, 0, "money_leader"], "Trash a Copper card from your hand. If you do, +3 Coins."],
+    [:Moneylender, :Action, [4, 0, 0, 0, 0, "money_lender"], "Trash a Copper card from your hand. If you do, +3 Coins."],
     [:Woodcutter, :Action, [3, 0, 1, 2, 0], "+1 Buy; +2 Coins"],
     [:CouncilRoom, :Action, [5, 0, 1, 0, 4, "council_room"], "+4 Cards; +1 Buy; Each other player draws a card."],
     [:ThroneRoom, :Action, [4, 0, 0, 0, 0, "throne_room"], "Choose an Action card in your hand. Play it twice."],

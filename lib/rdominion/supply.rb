@@ -22,6 +22,7 @@ module Rdominion
       return false if @supplies[idx][:stock] <= 0
       to.add(card)
       @supplies[idx][:stock] -= 1
+      true
     end
 
     def get_card(idx)
