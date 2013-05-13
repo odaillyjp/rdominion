@@ -6,6 +6,10 @@ module Rdominion
       nil
     end
 
+    def tresure?
+      false
+    end
+
     def name
       self.class.to_s.split("::").last
     end
@@ -15,10 +19,6 @@ module Rdominion
     end
 
     def reaction?
-      false
-    end
-
-    def tresure?
       false
     end
   end
