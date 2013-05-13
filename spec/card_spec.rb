@@ -113,11 +113,11 @@ module Rdominion
       end
 
       describe "#cost" do
-        it { expect(estate.cost).to eq 2}
+        it { expect(estate.cost).to eq 2 }
       end
 
       describe "#victory" do
-        it { expect(estate.victory).to eq 1}
+        it { expect(estate.victory).to eq 1 }
       end
     end
   end
@@ -133,11 +133,11 @@ module Rdominion
       end
 
       describe "#cost" do
-        it { expect(duchy.cost).to eq 5}
+        it { expect(duchy.cost).to eq 5 }
       end
 
       describe "#victory" do
-        it { expect(duchy.victory).to eq 3}
+        it { expect(duchy.victory).to eq 3} 
       end
     end
   end
@@ -153,12 +153,62 @@ module Rdominion
       end
 
       describe "#cost" do
-        it { expect(province.cost).to eq 8}
+        it { expect(province.cost).to eq 8 }
       end
 
       describe "#victory" do
-        it { expect(province.victory).to eq 6}
+        it { expect(province.victory).to eq 6 }
       end
     end
+  end
+
+  describe "StandardCurse" do
+    describe ".color" do
+      it { expect(StandardCurse.color).to eq "magenta" }
+    end
+  end
+
+  describe "Curse" do
+    it { expect(Curse).not_to be_nil }
+
+    context "created instance" do
+      let(:curse) { Curse.new }
+
+      describe "#name" do
+        it { expect(curse.name).to eq "Curse" }
+      end
+
+      describe "cost" do
+        it { expect(curse.cost).to eq 0 }
+      end
+
+      describe "victory" do
+        it { expect(curse.victory).to eq -1 }
+      end
+    end
+  end
+
+  describe "Action" do
+    let(:action) { Action.new }
+
+    describe "action?" do
+      it { expect(action.action?).to be_true }
+    end
+  end
+
+  describe "Reaction" do
+    let(:reaction) { Reaction.new }
+
+    describe "action?" do
+      it { expect(reaction.action?).to be_true }
+    end
+
+    describe "reaction?" do
+      it { expect(reaction.reaction?).to be_true }
+    end
+  end
+
+  describe "Market" do
+    it { expect(Market).not_to be_nil }
   end
 end

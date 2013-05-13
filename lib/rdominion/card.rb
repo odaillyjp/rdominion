@@ -107,6 +107,7 @@ module Rdominion
   end
 
   class Reaction < Card
+    # [Action - Reaction] Card
     def action?
       true
     end
