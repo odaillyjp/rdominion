@@ -209,6 +209,10 @@ module Rdominion
   end
 
   describe "Market" do
-    it { expect(Market).not_to be_nil }
+    it { expect(Market).to be_a_kind_of(Class) }
+  end
+
+  describe "Chapel" do
+    it { expect(Chapel).to be_a_kind_of(Class) }
   end
 end
