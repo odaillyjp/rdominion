@@ -35,7 +35,7 @@ module Rdominion
   end
 
   describe "Copper" do
-   it { expect(Copper).not_to be_nil }
+   it { expect(Copper).to be_a_kind_of(Class) }
 
     context "created instance." do
       let(:copper) { Copper.new }
@@ -55,7 +55,7 @@ module Rdominion
   end
 
   describe "Silver" do
-    it { expect(Silver).not_to be_nil }
+    it { expect(Silver).to be_a_kind_of(Class) }
 
     context "Created instance" do
       let(:silver) { Silver.new }
@@ -75,7 +75,7 @@ module Rdominion
   end
 
   describe "Gold" do
-    it { expect(Gold).not_to be_nil }
+    it { expect(Gold).to be_a_kind_of(Class) }
 
     context "Created instance" do
       let(:gold) { Gold.new }
@@ -103,7 +103,7 @@ module Rdominion
   end
 
   describe "Estate" do
-    it { expect(Estate).not_to be_nil }
+    it { expect(Estate).to be_a_kind_of(Class) }
 
     context "created instance" do
       let(:estate) { Estate.new }
@@ -123,7 +123,7 @@ module Rdominion
   end
 
   describe "Duchy" do
-    it { expect(Duchy).not_to be_nil }
+    it { expect(Duchy).to be_a_kind_of(Class) }
 
     context "created instance" do
       let(:duchy) { Duchy.new }
@@ -143,7 +143,7 @@ module Rdominion
   end
 
   describe "Province" do
-    it { expect(Province).not_to be_nil }
+    it { expect(Province).to be_a_kind_of(Class) }
 
     context "created instance" do
       let(:province) { Province.new }
@@ -169,7 +169,7 @@ module Rdominion
   end
 
   describe "Curse" do
-    it { expect(Curse).not_to be_nil }
+    it { expect(Curse).to be_a_kind_of(Class) }
 
     context "created instance" do
       let(:curse) { Curse.new }
